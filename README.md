@@ -1,5 +1,15 @@
 # JwtAuthDotNet
 
+<div align="center">
+
+![.NET](https://img.shields.io/badge/.NET-10.0-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
+![C#](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=csharp&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![Entity Framework](https://img.shields.io/badge/Entity_Framework-512BD4?style=for-the-badge&logo=nuget&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)
+
+</div>
+
 A modern ASP.NET Core 10.0 Web API showcasing JWT (JSON Web Token) authentication with refresh token functionality, role-based authorization, and PostgreSQL database integration.
 
 ## 🚀 Features
