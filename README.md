@@ -33,14 +33,16 @@ A modern ASP.NET Core 10.0 Web API showcasing JWT (JSON Web Token) authenticatio
 ## 🔧 Installation
 
 1. **Clone the repository**
+
    ```bash
-   git clone <repository-url>
+   git clone <https://github.com/SamedyHUNX/JwtAuthDotNet>
    cd JwtAuthDotNet
    ```
 
 2. **Configure the database connection**
-   
+
    Update the connection string in `appsettings.json`:
+
    ```json
    "ConnectionStrings": {
      "DefaultConnection": "Host=localhost;Port=5433;Database=JwtAuthDotnet;Username=your_username"
@@ -48,8 +50,9 @@ A modern ASP.NET Core 10.0 Web API showcasing JWT (JSON Web Token) authenticatio
    ```
 
 3. **Configure JWT settings**
-   
+
    Update the JWT configuration in `appsettings.json`:
+
    ```json
    "AppSettings": {
      "Token": "your-super-secret-key-here-make-it-long-and-secure",
@@ -62,6 +65,7 @@ A modern ASP.NET Core 10.0 Web API showcasing JWT (JSON Web Token) authenticatio
    > Never commit sensitive credentials to version control. Use **User Secrets** or environment variables for production.
 
 4. **Apply database migrations**
+
    ```bash
    dotnet ef database update
    ```
@@ -80,6 +84,7 @@ dotnet run
 ```
 
 The API will be available at:
+
 - **HTTPS**: `https://localhost:5001`
 - **HTTP**: `http://localhost:5000`
 - **API Documentation**: `https://localhost:5001/scalar/v1` (in development mode)
@@ -96,6 +101,7 @@ dotnet publish --configuration Release
 ### Authentication
 
 #### Register a New User
+
 ```http
 POST /api/auth/register
 Content-Type: application/json
@@ -107,6 +113,7 @@ Content-Type: application/json
 ```
 
 #### Login
+
 ```http
 POST /api/auth/login
 Content-Type: application/json
@@ -118,6 +125,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
@@ -126,6 +134,7 @@ Content-Type: application/json
 ```
 
 #### Refresh Token
+
 ```http
 POST /api/auth/refresh-token
 Content-Type: application/json
@@ -138,12 +147,14 @@ Content-Type: application/json
 ### Protected Endpoints
 
 #### Authenticated Endpoint
+
 ```http
 GET /Auth
 Authorization: Bearer {your-access-token}
 ```
 
 #### Admin-Only Endpoint
+
 ```http
 GET /admin-only
 Authorization: Bearer {your-admin-access-token}
@@ -211,16 +222,19 @@ curl -X POST https://localhost:5001/api/auth/login \
 ## 🔄 Database Migrations
 
 ### Create a new migration
+
 ```bash
 dotnet ef migrations add MigrationName
 ```
 
 ### Apply migrations
+
 ```bash
 dotnet ef database update
 ```
 
 ### Remove last migration
+
 ```bash
 dotnet ef migrations remove
 ```
