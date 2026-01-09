@@ -57,7 +57,9 @@ public class AuthService(UserDbContext context, IConfiguration configuration) : 
             // Claims: what you want to include in the token payload
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Role, user.Role)
             };
 
             // Get secret key from configuration (configuration injection)

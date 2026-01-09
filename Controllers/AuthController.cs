@@ -36,10 +36,18 @@ namespace JwtAuthDotNet.Controllers
         }
 
         [Authorize]
-        [HttpGet]
+        [HttpGet("/Auth")]
         public IActionResult AuthenticatedOnlyEndpoint()
         {
             return Ok("You are authenticated.");
+        }
+
+        // "Admin,User" is also possible
+        [Authorize(Roles = "Admin")]
+        [HttpGet("/admin-only")]
+        public IActionResult AdminOnlyEndpoint()
+        {
+            return Ok("You are an admin.");
         }
     }
 }
