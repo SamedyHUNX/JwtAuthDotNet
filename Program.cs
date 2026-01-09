@@ -1,4 +1,5 @@
 using JwtAuthDotNet.Data;
+using JwtAuthDotNet.Services;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -6,6 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
+
+// AddScoped: every request, this thing is created
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var connString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<UserDbContext>(options => options.UseNpgsql(connString));
