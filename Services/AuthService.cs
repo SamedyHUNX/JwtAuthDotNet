@@ -1,10 +1,12 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using JwtAuthDotNet.Data;
 using JwtAuthDotNet.Dtos;
 using JwtAuthDotNet.Entities;
+using JwtAuthDotNet.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -35,7 +37,7 @@ public class AuthService(UserDbContext context, IConfiguration configuration) : 
         return user;
     }
 
-    public async Task<string?> LoginAsync(UserDto request)
+    public async Task<TokenResponseDto?> LoginAsync(UserDto request)
     {
         var user = await context.Users.FirstOrDefaultAsync(user => user.Username == request.Username);
 
@@ -49,7 +51,13 @@ public class AuthService(UserDbContext context, IConfiguration configuration) : 
             return null;
         }
 
-        return CreateToken(user);
+        var reponse = new TokenResponseDto
+        {
+            AccessToken = CreateToken(user),
+            RefreshToken = await GenerateAndSaveRefreshTokenAsyn(user)
+        };
+
+        return reponse;
     }
 
     private string CreateToken(User user)
@@ -59,7 +67,7 @@ public class AuthService(UserDbContext context, IConfiguration configuration) : 
             {
                 new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Role, user.Role)
+                new Claim(ClaimTypes.Role, user.Role),
             };
 
             // Get secret key from configuration (configuration injection)
@@ -83,4 +91,24 @@ public class AuthService(UserDbContext context, IConfiguration configuration) : 
 
             return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
         }
+
+    private string GenerateRefreshToken()
+    {
+        var randomNumber = new byte[32];
+
+        using var rng = RandomNumberGenerator.Create();
+        rng.GetBytes(randomNumber);
+
+        return Convert.ToBase64String(randomNumber);
+    }
+
+    private async Task<string> GenerateAndSaveRefreshTokenAsyn(User user)
+    {
+        var refreshToken = GenerateRefreshToken();
+        user.RefreshToken = refreshToken;
+        user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+
+        await context.SaveChangesAsync();
+        return refreshToken;
+    }
 }

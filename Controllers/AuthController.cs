@@ -1,4 +1,5 @@
 using JwtAuthDotNet.Dtos;
+using JwtAuthDotNet.Models;
 using JwtAuthDotNet.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,16 +24,16 @@ namespace JwtAuthDotNet.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login(UserDto request)
+        public async Task<ActionResult<TokenResponseDto>> Login(UserDto request)
         {
-            var token = await authService.LoginAsync(request);
+            var result = await authService.LoginAsync(request);
 
-            if (token is null)
+            if (result is null)
             {
                 return BadRequest("Invalid username or password");
             }
 
-            return Ok(token);
+            return Ok(result);
         }
 
         [Authorize]
